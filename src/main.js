@@ -3,6 +3,7 @@ import VueOnsen from 'vue-onsenui';
 import App from './App.vue'
 
 // Webpack CSS import
+import 'mapbox-gl/dist/mapbox-gl.css';
 import 'onsenui/css/onsenui.css';
 import 'onsenui/css/onsen-css-components.css';
 

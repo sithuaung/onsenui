@@ -7,11 +7,20 @@
             >
                 <v-ons-page>
                     <v-ons-list>
+                        <!-- Pages -->
                         <v-ons-list-item v-for="page in pages"
                             tappable modifier="chevron"
-                            @click="currentPage = page; openSide = false"
+                            @click="togglePage(page)"
                         >
-                        <div class="center">{{ page }}</div>
+                            <div class="center">{{ page }}</div>
+                        </v-ons-list-item>
+
+                        <!-- Logout link -->
+                        <v-ons-list-item
+                            tappable modifier="chevron"
+                            @click="logout"
+                        >
+                        <div class="center">Logout</div>
                       </v-ons-list-item>
                     </v-ons-list>
                 </v-ons-page>
@@ -28,20 +37,36 @@
 import homePage from './pages/Home.vue';
 import newsPage from './pages/News.vue';
 import settingsPage from './pages/Settings.vue';
+import registerPage from './pages/Register.vue';
+import loginPage from './pages/Login.vue';
+import properties from './pages/Properties.vue';
+import myProperties from './pages/myProperties.vue';
+import addProperties from './pages/addProperties.vue';
 
 export default {
     name: 'app',
     data() {
         return {
             currentPage: 'home',
-            pages: ['home', 'news', 'settings'],
+            pages: ['home', 'properties', 'addProperties', 'myProperties', 'register', 'login'],
             openSide: false
         };
     },
     components: {
         home: homePage,
-        news: newsPage,
-        settings: settingsPage,
+        properties: properties,
+        addProperties: addProperties,
+        register: registerPage,
+        login: loginPage,
+        myProperties: myProperties
+    },
+    methods: {
+        logout(){
+            debugger;
+        },
+        togglePage(page){
+            this.currentPage = page; this.openSide = false
+        }
     }
 }   
 </script>
