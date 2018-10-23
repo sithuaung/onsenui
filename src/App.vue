@@ -43,14 +43,23 @@ import properties from './pages/Properties.vue';
 import myProperties from './pages/myProperties.vue';
 import addProperties from './pages/addProperties.vue';
 
+import { mapState } from 'vuex';
+
+// import { mapMutations } from 'vuex';
+// import { mapGetters } from 'vuex'
+
 export default {
     name: 'app',
     data() {
         return {
-            currentPage: 'home',
             pages: ['home', 'properties', 'addProperties', 'myProperties', 'register', 'login'],
             openSide: false
         };
+    },
+    computed: {
+        ...mapState('splitter', {
+            currentPage: state => state.currentPage,
+        })
     },
     components: {
         home: homePage,
@@ -61,6 +70,7 @@ export default {
         myProperties: myProperties
     },
     methods: {
+        
         logout(){
             debugger;
         },

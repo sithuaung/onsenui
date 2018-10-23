@@ -17,13 +17,14 @@
         <div id='map' class="high-300"></div>
 
         <section style="padding: 8px">
-            <ons-button modifier="large" style="margin-bottom: 8px">Sales</ons-button>
-            <ons-button modifier="large">Rent</ons-button>
+            <ons-button modifier="large" style="margin-bottom: 8px" @click="changePage('properties')">Sales</ons-button>
+            <ons-button modifier="large" @click="changePage('properties')">Rent</ons-button>
         </section>
     </v-ons-page>
 </template>
 
 <script>
+    import { mapActions } from 'vuex';
     import customToolbar from '../components/toolbar.vue';
     import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 
@@ -39,6 +40,14 @@
                 // 16.8379469,96.1561825
                 zoom: 12.0
             });
+        },
+        methods: {
+            ...mapActions('splitter', [
+                'resetPage'
+            ]),
+            changePage(page){
+                this.resetPage(page);
+            }
         }
     }
 </script>
