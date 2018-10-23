@@ -12,7 +12,7 @@
 
 <template>
     <v-ons-page>
-        <custom-toolbar title="Home" :action="toggleMenu"></custom-toolbar>
+        <custom-toolbar title="Home"></custom-toolbar>
 
         <div id='map' class="high-300"></div>
 

@@ -27,7 +27,16 @@
             </v-ons-splitter-side>
 
             <v-ons-splitter-content>
-                <component :is="currentPage" :toggle-menu="() => openSide = !openSide"></component>
+                <!-- <component :is="currentPage" :toggle-menu="() => openSide = !openSide"></component> -->
+
+                <v-ons-navigator swipeable swipe-target-width="50px"
+                    :page-stack="pageStack"
+                    :pop-page="storePop"
+                    :options="options"
+                    @postpush="showPopTip"
+                    :class="{ 'border-radius': borderRadius }"
+                ></v-ons-navigator>
+
             </v-ons-splitter-content>
         </v-ons-splitter>
     </div>
@@ -50,6 +59,17 @@ import { mapState } from 'vuex';
 
 export default {
     name: 'app',
+    components: {
+        home: homePage,
+        properties: properties,
+        addProperties: addProperties,
+        register: registerPage,
+        login: loginPage,
+        myProperties: myProperties
+    },
+    created(){
+        // this.$store.commit('navigator/push', homePage);
+    },
     data() {
         return {
             pages: ['home', 'properties', 'addProperties', 'myProperties', 'register', 'login'],
@@ -59,23 +79,35 @@ export default {
     computed: {
         ...mapState('splitter', {
             currentPage: state => state.currentPage,
-        })
-    },
-    components: {
-        home: homePage,
-        properties: properties,
-        addProperties: addProperties,
-        register: registerPage,
-        login: loginPage,
-        myProperties: myProperties
+        }),
+        pageStack() {
+            return [homePage];
+            // return this.$store.state.navigator.stack;
+        },
+        options() {
+            return this.$store.state.navigator.options;
+        },
+        borderRadius() {
+            return new URL(window.location).searchParams.get('borderradius') !== null;
+        }
     },
     methods: {
-        
         logout(){
             debugger;
         },
         togglePage(page){
             this.currentPage = page; this.openSide = false
+        },
+        storePop() {
+            this.$store.commit('navigator/pop');
+        },
+        showPopTip() {
+            debugger;
+            // this.$ons.notification.toast({
+            //     message: 'Try swipe-to-pop from left side!',
+            //     buttonLabel: 'Shut up!',
+            //     timeout: 2000
+            // });
         }
     }
 }   
@@ -83,11 +115,11 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
 }
 </style>

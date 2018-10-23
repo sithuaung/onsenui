@@ -11,6 +11,11 @@
 
 <script>
     export default {
-        props: ['title', 'action']
+        props: ['title'],
+        methods: {
+            action(){
+                this.$store.commit('splitter/toggleMenu');
+            }
+        }
     }
 </script>

@@ -9,7 +9,8 @@ const splitter = {
     namespaced: true,
 
     state: {
-        currentPage: 'home'
+        currentPage: 'home',
+        openSide: false
     },
 
     getters: {
@@ -19,6 +20,9 @@ const splitter = {
     mutations: {
         RESET_PAGE (state, page) {
             state.currentPage = page;
+        },
+        toggleMenu(state){
+            state.openSide = !state.openSide;
         }
     },
 
