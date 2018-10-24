@@ -73,7 +73,7 @@ export default {
     data() {
         return {
             pages: ['home', 'properties', 'addProperties', 'myProperties', 'register', 'login'],
-            openSide: false
+            // openSide: false
         };
     },
     computed: {
@@ -89,6 +89,9 @@ export default {
         },
         borderRadius() {
             return new URL(window.location).searchParams.get('borderradius') !== null;
+        },
+        openSide(){
+            return this.$store.state.splitter.openSide;
         }
     },
     methods: {
@@ -96,6 +99,7 @@ export default {
             debugger;
         },
         togglePage(page){
+            debugger;
             this.currentPage = page; this.openSide = false
         },
         storePop() {
