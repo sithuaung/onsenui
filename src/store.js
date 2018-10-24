@@ -5,30 +5,49 @@ Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
 
+// const splitter = {
+//     namespaced: true,
+
+//     state: {
+//         currentPage: 'home',
+//         openSide: false
+//     },
+
+//     getters: {
+//         currentPage: state => state.currentPage
+//     },
+
+//     mutations: {
+//         RESET_PAGE (state, page) {
+//             state.currentPage = page;
+//         },
+//         toggleMenu(state){
+//             state.openSide = !state.openSide;
+//         }
+//     },
+
+//     actions: {
+//         resetPage ({ commit, state }, page) {
+//             commit('RESET_PAGE', page);
+//         }
+//     }
+// }
+
+import homePage from './pages/Home.vue';
+
 const splitter = {
+    strict: true,
     namespaced: true,
-
     state: {
-        currentPage: 'home',
-        openSide: false
+        open: false
     },
-
-    getters: {
-        currentPage: state => state.currentPage
-    },
-
     mutations: {
-        RESET_PAGE (state, page) {
-            state.currentPage = page;
-        },
-        toggleMenu(state){
-            state.openSide = !state.openSide;
-        }
-    },
-
-    actions: {
-        resetPage ({ commit, state }, page) {
-            commit('RESET_PAGE', page);
+        toggle(state, shouldOpen) {
+            if (typeof shouldOpen === 'boolean') {
+                state.open = shouldOpen;
+            } else {
+                state.open = !state.open;
+            }
         }
     }
 }

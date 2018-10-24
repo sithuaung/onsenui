@@ -3,16 +3,16 @@
         <v-ons-splitter>
             <v-ons-splitter-side
                 swipeable width="150px" collapse="" side="right"
-                :open.sync="openSide"
+                :open.sync="isOpen"
             >
                 <v-ons-page>
                     <v-ons-list>
                         <!-- Pages -->
                         <v-ons-list-item v-for="page in pages"
                             tappable modifier="chevron"
-                            @click="togglePage(page)"
+                            @click="togglePage(page.component)"
                         >
-                            <div class="center">{{ page }}</div>
+                            <div class="center">{{ page.label }}</div>
                         </v-ons-list-item>
 
                         <!-- Logout link -->
@@ -43,46 +43,57 @@
 </template>
 
 <script>
-import homePage from './pages/Home.vue';
-import newsPage from './pages/News.vue';
-import settingsPage from './pages/Settings.vue';
-import registerPage from './pages/Register.vue';
-import loginPage from './pages/Login.vue';
+import home from './pages/Home.vue';
 import properties from './pages/Properties.vue';
 import myProperties from './pages/myProperties.vue';
 import addProperties from './pages/addProperties.vue';
-
-import { mapState } from 'vuex';
-
-// import { mapMutations } from 'vuex';
-// import { mapGetters } from 'vuex'
+import register from './pages/Register.vue';
+import login from './pages/Login.vue';
 
 export default {
     name: 'app',
-    components: {
-        home: homePage,
-        properties: properties,
-        addProperties: addProperties,
-        register: registerPage,
-        login: loginPage,
-        myProperties: myProperties
-    },
-    created(){
-        // this.$store.commit('navigator/push', homePage);
+    beforeCreate() {
+        this.$store.commit('navigator/push', home);
     },
     data() {
         return {
-            pages: ['home', 'properties', 'addProperties', 'myProperties', 'register', 'login'],
-            // openSide: false
+            pages: [
+                {
+                    component: home,
+                    label: 'Home',
+                    desc: 'Home page'
+                },
+                {
+                    component: properties,
+                    label: 'Properties',
+                    desc: 'Properties page'
+                },
+                {
+                    component: myProperties,
+                    label: 'My properties',
+                    desc: 'My properties page'
+                },
+                {
+                    component: addProperties,
+                    label: 'Add properties',
+                    desc: 'Add properties page'
+                },
+                {
+                    component: register,
+                    label: 'Register',
+                    desc: 'Register page'
+                },
+                {
+                    component: login,
+                    label: 'Login',
+                    desc: 'Login page'
+                },
+            ]
         };
     },
     computed: {
-        ...mapState('splitter', {
-            currentPage: state => state.currentPage,
-        }),
         pageStack() {
-            return [homePage];
-            // return this.$store.state.navigator.stack;
+            return this.$store.state.navigator.stack;
         },
         options() {
             return this.$store.state.navigator.options;
@@ -90,8 +101,13 @@ export default {
         borderRadius() {
             return new URL(window.location).searchParams.get('borderradius') !== null;
         },
-        openSide(){
-            return this.$store.state.splitter.openSide;
+        isOpen: {
+            get() {
+                return this.$store.state.splitter.open;
+            },
+            set(newValue) {
+                this.$store.commit('splitter/toggle', newValue)
+            }
         }
     },
     methods: {
@@ -99,14 +115,13 @@ export default {
             debugger;
         },
         togglePage(page){
-            debugger;
-            this.currentPage = page; this.openSide = false
+            this.$store.commit('navigator/push', page);
+            this.$store.commit('splitter/toggle');
         },
         storePop() {
             this.$store.commit('navigator/pop');
         },
         showPopTip() {
-            debugger;
             // this.$ons.notification.toast({
             //     message: 'Try swipe-to-pop from left side!',
             //     buttonLabel: 'Shut up!',
